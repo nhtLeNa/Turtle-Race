@@ -1,13 +1,23 @@
+import pygame
+pygame.init()
+
+win_sound = pygame.mixer.Sound("win.ogg")
+lose_sound = pygame.mixer.Sound("lose.ogg")
+pygame.mixer.music.load("play_turtle.ogg")
+
 from start import *
 from random import randint
-
 
 def movingbackward(char, number):#di lui
     char.setheading(180)
     char.forward(0 - number)
 
+def play_music():
+    pygame.mixer.music.play(-1)
 
 def racing():
+
+    play_music()
     d1 = 0 #random vi tri di truoc
     d2 = 0
     d3 = 0
@@ -107,22 +117,31 @@ def racing():
                 pointlist[3] += rank_val
 
 
-pointlist = [0, 0, 0, 0]
-racing()
-print(pointlist)
-
-
 def winner(): #kiem tra thang thua
     m = 5
     for c in range(4):
-        if pointlist[c] <m:
+        if pointlist[c] < m:
             m = pointlist[c]
     win = namelist[c]
     print('The winner is:\n', win)
     if bet == win:
+        pygame.mixer.Sound.play(win_sound)
+        pygame.mixer.music.stop()
         print('You won the bet')
     else:
-        print('You lost')
+        pygame.mixer.Sound.play(lose_sound)
+        pygame.mixer.music.stop()
+        print('You lost the bet')
+
+#while True:
+    pointlist = [0, 0, 0, 0]
+    racing()
+    print(pointlist)
+    winner()
+   # tmp = input('You want to play again ? (Y/N) ')
+   # if tmp == 'N':
+   #     break
 
 
-winner()
+
+

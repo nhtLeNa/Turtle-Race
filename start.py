@@ -1,5 +1,6 @@
 from turtle import *
 import time
+
 f_turtle = 10
 b_turtle = -3
 #man hinh
@@ -95,5 +96,5 @@ yellow.hideturtle()
 character_set(character)
 
 print(namelist)
-bet = input('Which one would be the winner?:')#ca cuoc
+bet = input('Which one would be the winner?: ')#ca cuoc
 length=int(column)*20 # do dai duong dua
