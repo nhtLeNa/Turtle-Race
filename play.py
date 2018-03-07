@@ -1,26 +1,35 @@
+import pygame
+pygame.init()
+win_sound = pygame.mixer.Sound("win.ogg")
+lose_sound = pygame.mixer.Sound("lose.ogg")
+pygame.mixer.music.load("play_turtle.ogg")
+
 from start import *
 from random import randint
 
+def play_music():
+    pygame.mixer.music.play(-1)
 
-def movingbackward(char, number):#di lui
+def movingbackward(char, number):  # di lui
     char.setheading(180)
     char.forward(0 - number)
 
 
 def racing():
-    d1 = 0 #random vi tri di truoc
+    play_music()
+    d1 = 0  # random vi tri di truoc
     d2 = 0
     d3 = 0
     d4 = 0
-    rank_val = 0 #bien xep hang
+    rank_val = 0  # bien xep hang
     while d1 < length or d2 < length or d3 < length or d4 < length:
         if d1 < length:
-            random = randint(1, 4) #cho random tu 1->4
+            random = randint(1, 4)  # cho random tu 1->4
         else:
-            random = 0 #neu toi dich roi thi k dua nua
+            random = 0  # neu toi dich roi thi k dua nua
         if d2 < length:
             random2 = randint(1, 4)
-            while random2 == random: #random nhung phai khac voi so da duoc random truoc
+            while random2 == random:  # random nhung phai khac voi so da duoc random truoc
                 random2 = randint(1, 4)
         else:
             random2 = 0
@@ -39,11 +48,11 @@ def racing():
         List = [random, random2, random3, random4]
         for count in range(4):
             if List[count] == 1 and d1 < length:
-                move = randint(b_turtle, f_turtle) #random buoc di
+                move = randint(b_turtle, f_turtle)  # random buoc di
                 if move == 0:
-                    move = randint(b_turtle, f_turtle) #khong cho dung lai
+                    move = randint(b_turtle, f_turtle)  # khong cho dung lai
                 if move < 0:
-                    if blue.xcor() <= -140: #o vach xuat phat khong duoc di lui
+                    if blue.xcor() <= -140:  # o vach xuat phat khong duoc di lui
                         move = randint(0, f_turtle)
                     else:
                         movingbackward(blue, move)
@@ -106,23 +115,58 @@ def racing():
                 rank_val += 1
                 pointlist[3] += rank_val
 
-
-pointlist = [0, 0, 0, 0]
-racing()
-print(pointlist)
-
-
-def winner(): #kiem tra thang thua
+def winner():  # kiem tra thang thua
     m = 5
     for c in range(4):
-        if pointlist[c] <m:
+        if pointlist[c] < m:
             m = pointlist[c]
     win = namelist[c]
     print('The winner is:\n', win)
     if bet == win:
+        pygame.mixer.music.stop()
+        pygame.mixer.Sound.play(win_sound)
         print('You won the bet')
     else:
+        pygame.mixer.music.stop()
+        pygame.mixer.Sound.play(lose_sound)
         print('You lost')
 
+def update_point(point, pointlist):
+    for count in range(4):
+        pos = pointlist[count]
+        if   pos == 1:
+             point[count].first += 1
+        elif pos == 2:
+            point[count].second += 1
+        elif pos == 3:
+            point[count].third += 1
+        else:
+            point[count].fourth += 1
 
-winner()
+
+def create_point_struct(_class, num):
+    tmp = list()
+    for count in range(num):
+        tmp.append(_class)
+    return tmp
+
+def play_continue_game(pointlist):
+    racing()
+    print(pointlist)
+    #point = create_point_struct(point_history, 4)
+    #update_point(point, pointlist)
+    winner()
+
+def play_new_game(pointlist):
+    pointlist = [0, 0, 0, 0]
+    play_continue_game(pointlist)
+
+
+#while True:
+pointlist = [0, 0, 0, 0]
+play_new_game(pointlist)
+    #...
+#pointlist = [0, 0, 0, 0]
+#racing()
+#print(pointlist)
+#winner()
